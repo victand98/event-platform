@@ -1,5 +1,5 @@
 const checkRequiredEnvVars = (): void => {
-  const requiredEnvVars: string[] = ["PORT"];
+  const requiredEnvVars: string[] = ['PORT'];
 
   requiredEnvVars.forEach((envVar) => {
     if (!process.env[envVar]) {
