@@ -1,16 +1,16 @@
-import dotenv from "dotenv";
-import { app } from "./app";
-import { checkRequiredEnvVars } from "./utils";
+import './shared/infrastructure/utils/load-env-vars';
 
-dotenv.config();
+import { app } from './app';
+import { checkRequiredEnvVars, config } from './shared';
 
 const start = async (): Promise<void> => {
   try {
     checkRequiredEnvVars();
 
-    const PORT: number = parseInt(process.env.PORT!, 10) || 4000;
-    app.listen(PORT, () => {
-      console.log(`Server is running on http://localhost:${PORT}`);
+    const { port } = config.server;
+
+    app.listen(port, () => {
+      console.log(`Server is running on http://localhost:${port}`);
     });
   } catch (error) {
     console.error(error);
