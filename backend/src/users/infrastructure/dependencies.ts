@@ -1,5 +1,4 @@
-import { ConsoleLogger } from '../../shared';
-import { CryptoPasswordEncoder } from '../../shared/infrastructure/password-encoder';
+import { ConsoleLogger, CryptoPasswordEncoder } from '../../shared';
 import { SignUpUseCase } from '../application';
 import { UserController } from './rest-api';
 import { PrismaUserRepository } from './user-repository';
