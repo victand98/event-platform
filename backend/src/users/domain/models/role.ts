@@ -1,8 +1,6 @@
-const Role = {
+export const Role: { [key: string]: 'USER' | 'ADMIN' } = {
   USER: 'USER',
   ADMIN: 'ADMIN',
 };
 
-type Role = (typeof Role)[keyof typeof Role];
-
-export { Role };
+export type Role = (typeof Role)[keyof typeof Role];

@@ -11,7 +11,6 @@ const validationMiddleware = <T>(validator: Validator<T>) => {
       validationService.validate(req.body);
       next();
     } catch (error) {
-      console.log(error);
       next(error);
     }
   };
