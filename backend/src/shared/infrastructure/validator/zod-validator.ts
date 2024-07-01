@@ -1,12 +1,19 @@
 import { ZodSchema } from 'zod';
 
-import { Validator } from '../../domain';
+import { SerializableError, Validator } from '../../domain';
 
 class ZodValidator<T> implements Validator<T> {
   constructor(private readonly schema: ZodSchema<T>) {}
 
-  validate(value: T): void {
-    this.schema.parse(value);
+  validate(value: T): SerializableError[] {
+    const { success, error } = this.schema.safeParse(value);
+
+    if (success) {
+      return [];
+    }
+    return error.errors.map((error) => {
+      return { message: error.message, field: error.path.join('.') };
+    });
   }
 }
 

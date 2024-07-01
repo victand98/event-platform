@@ -18,22 +18,32 @@ describe('ZodValidator', () => {
   });
 
   describe('validate', () => {
-    it('should validate the given value when it is valid', () => {
+    it('should return an empty array when the value is valid', () => {
       const value = 'valid value';
 
-      expect(() => validator.validate(value)).not.toThrow();
+      const errors = validator.validate(value);
+
+      expect(errors).toEqual([]);
     });
 
-    it('should throw an error when the value is invalid', () => {
+    it('should return an array with the error when the value is invalid', () => {
       const value = 'in';
 
-      expect(() => validator.validate(value)).toThrow();
+      const errors = validator.validate(value);
+
+      expect(errors).toHaveLength(1);
+      expect(errors[0]).toHaveProperty('message');
+      expect(errors[0]).toHaveProperty('field');
     });
 
-    it('should throw an error when the value is not as the expected type', () => {
+    it('should return an array with the error when the value is not as the expected type', () => {
       const value = 123 as unknown as string;
 
-      expect(() => validator.validate(value)).toThrow();
+      const errors = validator.validate(value);
+
+      expect(errors).toHaveLength(1);
+      expect(errors[0]).toHaveProperty('message');
+      expect(errors[0]).toHaveProperty('field');
     });
   });
 });

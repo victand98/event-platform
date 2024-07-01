@@ -1,5 +1,7 @@
+import { SerializableError } from './errors';
+
 interface Validator<T> {
-  validate(value: T): void;
+  validate(value: T): SerializableError[];
 }
 
 export { Validator };

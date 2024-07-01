@@ -1,13 +1,15 @@
 import { faker } from '@faker-js/faker';
 import { getMockReq, getMockRes } from '@jest-mock/express';
 
-import { validationMiddleware, Validator } from '../../../../src/shared';
+import { ValidationError, validationMiddleware, Validator } from '../../../../src/shared';
 
 describe('validationMiddleware', () => {
   let validator: jest.Mocked<Validator<string>>;
 
   beforeEach(() => {
-    validator = { validate: jest.fn() };
+    validator = {
+      validate: jest.fn().mockReturnValue([]),
+    };
 
     jest.clearAllMocks();
   });
@@ -51,23 +53,21 @@ describe('validationMiddleware', () => {
     expect(next).toHaveBeenCalledWith();
   });
 
-  it('should call the next function with an error when the validation fails', () => {
+  it('should throw a ValidationError when the validation is unsuccessful', () => {
     const middleware = validationMiddleware(validator);
 
     const req = getMockReq({
-      body: 123 as unknown as string,
+      body: faker.lorem.word(),
     });
     const { res, next } = getMockRes();
 
-    const error = new Error('validation error');
-    validator.validate.mockImplementation(() => {
-      throw error;
-    });
+    validator.validate.mockReturnValueOnce([
+      {
+        message: faker.lorem.sentence(),
+        field: faker.lorem.word(),
+      },
+    ]);
 
-    middleware(req, res, next);
-
-    expect(validator.validate).toHaveBeenCalledTimes(1);
-    expect(next).toHaveBeenCalledTimes(1);
-    expect(next).toHaveBeenCalledWith(error);
+    expect(() => middleware(req, res, next)).toThrow(ValidationError);
   });
 });
