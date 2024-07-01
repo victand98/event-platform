@@ -1,4 +1,4 @@
-import { Logger, PasswordEncoder } from '../../shared';
+import { BadRequestError, Logger, PasswordEncoder } from '../../shared';
 import { User, UserRepository } from '../domain';
 
 class SignUpUseCase {
@@ -14,7 +14,7 @@ class SignUpUseCase {
     const user = await this.userRepository.getByEmail(email);
 
     if (user) {
-      const error = new Error('User already exists');
+      const error = new BadRequestError({ message: 'User already exists' });
       this.logger.error(error.message);
       throw error;
     }
