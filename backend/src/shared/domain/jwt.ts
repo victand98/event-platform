@@ -1,6 +1,6 @@
 interface Jwt {
   sign(payload: unknown): string;
-  verify(token: string): unknown;
+  verify<T>(token: string): T;
 }
 
 export { Jwt };
