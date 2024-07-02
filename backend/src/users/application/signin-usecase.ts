@@ -1,13 +1,14 @@
-import { BadRequestError, PasswordEncoder } from '../../shared';
+import { BadRequestError, Jwt, PasswordEncoder } from '../../shared';
 import { User, UserRepository } from '../domain';
 
 class SignInUseCase {
   constructor(
     private userRepository: UserRepository,
-    private passwordEncoder: PasswordEncoder
+    private passwordEncoder: PasswordEncoder,
+    private jwt: Jwt
   ) {}
 
-  async run(email: string, password: string): Promise<User> {
+  async run(email: string, password: string): Promise<User & { token: string }> {
     const user = await this.userRepository.getByEmail(email);
 
     if (!user) {
@@ -20,7 +21,9 @@ class SignInUseCase {
       throw new BadRequestError({ message: 'Invalid credentials' });
     }
 
-    return user;
+    const token = this.jwt.sign({ id: user.id, role: user.role });
+
+    return { ...user, token };
   }
 }
 
