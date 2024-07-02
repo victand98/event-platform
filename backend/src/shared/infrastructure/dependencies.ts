@@ -1,3 +1,4 @@
+import { JsonWebTokenJwt } from './jwt';
 import { ConsoleLogger } from './logger';
 import { ErrorMiddleware } from './middleware';
 import { CryptoPasswordEncoder } from './password-encoder';
@@ -5,5 +6,6 @@ import { CryptoPasswordEncoder } from './password-encoder';
 const logger = new ConsoleLogger();
 const passwordEncoder = new CryptoPasswordEncoder();
 const errorMiddleware = new ErrorMiddleware(logger);
+const jwt = new JsonWebTokenJwt();
 
-export { errorMiddleware, logger, passwordEncoder };
+export { errorMiddleware, jwt, logger, passwordEncoder };

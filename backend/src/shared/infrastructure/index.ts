@@ -1,4 +1,5 @@
 export * from './dependencies';
+export * from './jwt';
 export * from './logger';
 export * from './middleware';
 export * from './password-encoder';
