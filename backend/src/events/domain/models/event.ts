@@ -2,7 +2,7 @@ class Event {
   id: number;
   title: string;
   comunity: string;
-  image?: string;
+  image: string | null;
   description: string;
   date: Date;
   location: string;
@@ -11,13 +11,13 @@ class Event {
   updatedAt: Date;
 
   constructor(
-    id: number = -1,
     title: string,
     comunity: string,
     description: string,
     date: Date,
     location: string,
-    image?: string,
+    id: number = -1,
+    image: string | null = null,
     published: boolean = false,
     createdAt: Date = new Date(),
     updatedAt: Date = new Date()
