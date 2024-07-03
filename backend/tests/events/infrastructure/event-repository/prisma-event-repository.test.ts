@@ -36,7 +36,7 @@ describe('PrismaEventRepository', () => {
   });
 
   describe('getById', () => {
-    it('should return a event when it receives an event id', async () => {
+    it('should return an event when it receives an event id', async () => {
       const eventData = generateTestData('event');
 
       prismaMock.event.findUnique.mockResolvedValue(eventData);
@@ -59,6 +59,26 @@ describe('PrismaEventRepository', () => {
 
       await expect(repository.getById(eventData.id)).rejects.toThrow();
       expect(prismaMock.event.findUnique).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('update', () => {
+    it('should update an event when it receives an event id and data', async () => {
+      const eventData = generateTestData('event');
+
+      prismaMock.event.update.mockResolvedValue(eventData);
+
+      await expect(repository.update(eventData)).resolves.toEqual(eventData);
+      expect(prismaMock.event.update).toHaveBeenCalledTimes(1);
+    });
+
+    it('should throw an error when the event update fails', async () => {
+      const eventData = generateTestData('event');
+
+      prismaMock.event.update.mockRejectedValue(new Error());
+
+      await expect(repository.update(eventData)).rejects.toThrow();
+      expect(prismaMock.event.update).toHaveBeenCalledTimes(1);
     });
   });
 });
