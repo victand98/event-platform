@@ -15,6 +15,10 @@ class PrismaEventRepository implements EventRepository {
       },
     });
   }
+
+  async getById(id: number): Promise<Event | null> {
+    return await prisma.event.findUnique({ where: { id, participants: { every: { eventId: id } } } });
+  }
 }
 
 export { PrismaEventRepository };
