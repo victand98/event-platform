@@ -35,6 +35,31 @@ describe('PrismaEventRepository', () => {
     });
   });
 
+  describe('getAll', () => {
+    it('should return a list of events', async () => {
+      const eventData = [generateTestData('event'), generateTestData('event')];
+
+      prismaMock.event.findMany.mockResolvedValue(eventData);
+
+      await expect(repository.getAll()).resolves.toEqual(eventData);
+      expect(prismaMock.event.findMany).toHaveBeenCalledTimes(1);
+    });
+
+    it('should return an empty list when there are no events', async () => {
+      prismaMock.event.findMany.mockResolvedValue([]);
+
+      await expect(repository.getAll()).resolves.toEqual([]);
+      expect(prismaMock.event.findMany).toHaveBeenCalledTimes(1);
+    });
+
+    it('should throw an error when the event retrieval fails', async () => {
+      prismaMock.event.findMany.mockRejectedValue(new Error());
+
+      await expect(repository.getAll()).rejects.toThrow();
+      expect(prismaMock.event.findMany).toHaveBeenCalledTimes(1);
+    });
+  });
+
   describe('getById', () => {
     it('should return an event when it receives an event id', async () => {
       const eventData = generateTestData('event');

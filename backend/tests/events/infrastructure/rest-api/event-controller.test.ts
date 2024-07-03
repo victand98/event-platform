@@ -1,21 +1,29 @@
 import { getMockReq, getMockRes } from '@jest-mock/express';
 
-import { CreateEventUseCase, EventController, GetEventUseCase, UpdateEventUseCase } from '../../../../src/events';
+import {
+  CreateEventUseCase,
+  EventController,
+  GetEventsUseCase,
+  GetEventUseCase,
+  UpdateEventUseCase,
+} from '../../../../src/events';
 import { StatusCode } from '../../../../src/shared';
 import { generateTestData } from '../../../utils';
 
 describe('EventController', () => {
   let controller: EventController;
   let createEventUseCase: jest.Mocked<CreateEventUseCase>;
+  let getEventsUseCase: jest.Mocked<GetEventsUseCase>;
   let getEventUseCase: jest.Mocked<GetEventUseCase>;
   let updateEventUseCase: jest.Mocked<UpdateEventUseCase>;
 
   beforeEach(() => {
     createEventUseCase = { run: jest.fn() } as unknown as jest.Mocked<CreateEventUseCase>;
+    getEventsUseCase = { run: jest.fn() } as unknown as jest.Mocked<GetEventsUseCase>;
     getEventUseCase = { run: jest.fn() } as unknown as jest.Mocked<GetEventUseCase>;
     updateEventUseCase = { run: jest.fn() } as unknown as jest.Mocked<UpdateEventUseCase>;
 
-    controller = new EventController(createEventUseCase, getEventUseCase, updateEventUseCase);
+    controller = new EventController(createEventUseCase, getEventsUseCase, getEventUseCase, updateEventUseCase);
 
     jest.clearAllMocks();
   });
@@ -58,6 +66,35 @@ describe('EventController', () => {
       await expect(controller.createEvent(req, res)).rejects.toThrow();
       expect(res.status).not.toHaveBeenCalled();
       expect(res.json).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('getEvents', () => {
+    it('should return the events data in the response', async () => {
+      const eventsData = [generateTestData('event')];
+      const req = getMockReq();
+      const { res } = getMockRes();
+
+      getEventsUseCase.run.mockResolvedValue(eventsData);
+
+      await controller.getEvents(req, res);
+
+      expect(getEventsUseCase.run).toHaveBeenCalled();
+      expect(res.status).toHaveBeenCalledWith(StatusCode.OK);
+      expect(res.json).toHaveBeenCalledWith(eventsData);
+    });
+
+    it('should return an empty array in the response when there are no events', async () => {
+      const req = getMockReq();
+      const { res } = getMockRes();
+
+      getEventsUseCase.run.mockResolvedValue([]);
+
+      await controller.getEvents(req, res);
+
+      expect(getEventsUseCase.run).toHaveBeenCalled();
+      expect(res.status).toHaveBeenCalledWith(StatusCode.OK);
+      expect(res.json).toHaveBeenCalledWith([]);
     });
   });
 
