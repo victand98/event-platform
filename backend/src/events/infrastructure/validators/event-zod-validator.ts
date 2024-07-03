@@ -18,4 +18,16 @@ const eventCreateSchema = z.object<EventCreateRawShape>({
 });
 const eventCreateValidator = new ZodValidator(eventCreateSchema);
 
-export { eventCreateValidator };
+type EventUpdateRawShape = Partial<Record<keyof Event, ZodTypeAny>>;
+const eventUpdateSchema = z.object<EventUpdateRawShape>({
+  comunity: z.string().min(3).optional(),
+  date: z.string().datetime().optional(),
+  description: z.string().min(3).optional(),
+  location: z.string().min(3).optional(),
+  title: z.string().min(3).optional(),
+  published: z.boolean().optional(),
+  image: z.string().nullable().optional(),
+});
+const eventUpdateValidator = new ZodValidator(eventUpdateSchema);
+
+export { eventCreateValidator, eventUpdateValidator };
