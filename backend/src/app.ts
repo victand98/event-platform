@@ -1,5 +1,6 @@
 import 'express-async-errors';
 
+import cors from 'cors';
 import express, { Express } from 'express';
 
 import { eventRouter } from './events';
@@ -9,6 +10,7 @@ import { userRouter } from './users';
 const app: Express = express();
 
 app.use(express.json());
+app.use(cors());
 
 app.use(currentUserMiddleware.handle.bind(currentUserMiddleware));
 
