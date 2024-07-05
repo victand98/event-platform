@@ -4,6 +4,5 @@
     "next",
     "prettier",
     "plugin:@next/next/recommended"
-  ],
-  "rules": { "no-unused-vars": "error" }
+  ]
 }
