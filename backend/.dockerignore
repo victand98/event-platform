@@ -1,0 +1,21 @@
+# Ignore development files and directories
+node_modules/
+npm-debug.log
+
+# Ignore build artifacts
+dist/
+
+# Ignore environment-specific files
+.env
+.env.*
+
+# Ignore version control files
+.git/
+.gitignore
+
+# Ignore logs and temporary files
+*.log
+*.tmp
+
+# Ignore test files
+test/

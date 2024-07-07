@@ -1,0 +1,33 @@
+## STAGE 1 - Build the app
+FROM node:20 as build
+
+RUN apt-get update && apt-get install -y build-essential -y --no-install-recommends dumb-init
+
+WORKDIR /app
+
+COPY package*.json ./
+COPY tsconfig.json ./
+COPY src ./src
+COPY prisma ./prisma
+
+RUN npm install
+RUN npm run build
+
+## STAGE 2 - Run the app
+FROM node:20-bullseye-slim
+
+ENV NODE_ENV=production
+
+COPY --from=build /usr/bin/dumb-init /usr/bin/dumb-init
+
+WORKDIR /app
+
+COPY package*.json ./
+RUN npm install --omit=dev
+COPY --from=build /app/dist ./
+COPY --from=build /app/prisma/schema.prisma ./prisma/
+COPY --from=build /app/prisma/migrations ./prisma/migrations
+
+RUN npx prisma generate
+
+CMD ["dumb-init", "npm", "run", "start:migrate:prod"]
