@@ -4,6 +4,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node ./dist/src/index.js",
+    "start:prod": "node ./src/index.js",
+    "start:migrate:prod": "prisma migrate deploy && npm run start:prod",
     "dev": "nodemon ./src/index.ts",
     "test": "jest",
     "test:watch": "jest --watch",

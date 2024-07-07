@@ -1,0 +1,28 @@
+version: '3'
+services:
+  database:
+    container_name: event-platform-db
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: event-platform
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  backend:
+    container_name: event-platform-backend
+    image: ${BACKEND_IMAGE}
+    restart: always
+    depends_on:
+      - database
+    ports:
+      - '4000:4000'
+    env_file:
+      - ./.env.backend
+
+volumes:
+  postgres_data:
