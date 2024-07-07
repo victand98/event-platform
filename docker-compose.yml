@@ -1,3 +1,5 @@
+version: '3'
+
 services:
   database:
     container_name: event-platform-db
@@ -24,6 +26,17 @@ services:
       - '4000:4000'
     env_file:
       - ./backend/.env
+
+  frontend:
+    container_name: event-platform-frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.prod
+    restart: always
+    ports:
+      - '3000:3000'
+    env_file:
+      - ./frontend/.env
 
 volumes:
   postgres_data:
