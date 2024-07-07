@@ -24,5 +24,14 @@ services:
     env_file:
       - ./.env.backend
 
+  frontend:
+    container_name: event-platform-frontend
+    image: ${FRONTEND_IMAGE}
+    restart: always
+    ports:
+      - '3000:3000'
+    env_file:
+      - ./.env.frontend
+
 volumes:
   postgres_data:

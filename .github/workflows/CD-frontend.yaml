@@ -1,10 +1,10 @@
-name: Backend CD
+name: Frontend CD
 
 on:
   workflow_dispatch:
   push:
     branches: ['main']
-    paths: ['backend/**']
+    paths: ['frontend/**']
 
 jobs:
   build-and-deploy:
@@ -23,19 +23,19 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ secrets.DOCKER_USERNAME }}/event-platform-backend
+          images: ${{ secrets.DOCKER_USERNAME }}/event-platform-frontend
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v6
         with:
-          context: ./backend
-          file: ./backend/Dockerfile.prod
+          context: ./frontend
+          file: ./frontend/Dockerfile.prod
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
       - name: Create environment file
-        run: echo "${{ secrets.BACKEND_ENV }}" > .env.backend
+        run: echo "${{ secrets.FRONTEND_ENV }}" > .env.frontend
 
       - name: Deploy to DigitalOcean Droplet
         env:
@@ -48,13 +48,14 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H $DO_HOST >> ~/.ssh/known_hosts
 
-          scp -i ~/.ssh/id_rsa docker-compose.prod.yml .env.backend $DO_USERNAME@$DO_HOST:~/event-platform/
+          scp -i ~/.ssh/id_rsa docker-compose.prod.yml .env.frontend $DO_USERNAME@$DO_HOST:~/event-platform/
 
           ssh -i ~/.ssh/id_rsa $DO_USERNAME@$DO_HOST << EOF
             cd ~/event-platform
-            sed -i '/BACKEND_IMAGE/d' .env
-            echo "BACKEND_IMAGE=${{ steps.meta.outputs.tags }}" >> .env
+
+            sed -i '/FRONTEND_IMAGE/d' .env
+            echo "FRONTEND_IMAGE=${{ steps.meta.outputs.tags }}" >> .env
             
-            docker-compose -f docker-compose.prod.yml pull backend
-            docker-compose -f docker-compose.prod.yml up -d database backend
+            docker-compose -f docker-compose.prod.yml pull frontend
+            docker-compose -f docker-compose.prod.yml up -d --no-deps frontend
           EOF
