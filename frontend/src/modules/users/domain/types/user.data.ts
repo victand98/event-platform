@@ -2,4 +2,9 @@ import { User } from '../user';
 
 type UserSignInData = Pick<User, 'email' | 'password'>;
 
-export type { UserSignInData };
+type UserSignUpData = Pick<
+  User,
+  'email' | 'password' | 'firstName' | 'lastName'
+>;
+
+export type { UserSignInData, UserSignUpData };
