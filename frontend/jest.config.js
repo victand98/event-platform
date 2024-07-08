@@ -12,7 +12,7 @@ const createJestConfig = nextJest({
 
 const config = {
   // All imported modules in your tests should be mocked automatically
-  // automock: false,
+  automock: false,
 
   // Stop running tests after `n` failures
   // bail: 0,
@@ -141,7 +141,7 @@ const config = {
   // runner: "jest-runner",
 
   // The paths to modules that run some code to configure or set up the testing environment before each test
-  // setupFiles: [],
+  setupFiles: ['<rootDir>/setupJest.js'],
 
   // A list of paths to modules that run some code to configure or set up the testing framework before each test
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
@@ -168,9 +168,9 @@ const config = {
   // ],
 
   // An array of regexp pattern strings that are matched against all test paths, matched tests are skipped
-  // testPathIgnorePatterns: [
-  //   "/node_modules/"
-  // ],
+  // A pattern to ignore index.ts inside __tests__ folder
+
+  testPathIgnorePatterns: ['/node_modules/', '/__utils__/', '/__mocks__/'],
 
   // The regexp pattern or array of patterns that Jest uses to detect test files
   // testRegex: [],
