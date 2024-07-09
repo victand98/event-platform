@@ -31,7 +31,9 @@ services:
     container_name: event-platform-frontend
     build:
       context: ./frontend
-      dockerfile: Dockerfile.prod
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_APP_API_URL: ${NEXT_PUBLIC_APP_API_URL}
     restart: always
     ports:
       - '3000:3000'
