@@ -6,7 +6,7 @@ const defaultUserData: User = {
   email: faker.internet.email(),
   firstName: faker.person.firstName(),
   lastName: faker.person.lastName(),
-  password: faker.internet.password(),
+  password: faker.internet.password({ length: 8 }),
   id: faker.number.int(),
   role: faker.helpers.enumValue(Role),
 };

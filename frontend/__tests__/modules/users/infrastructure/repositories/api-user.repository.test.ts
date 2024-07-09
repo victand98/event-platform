@@ -5,7 +5,7 @@ import {
   UserSignUpData,
 } from '@/modules';
 import fetchMock from 'jest-fetch-mock';
-import { generateTestData } from '../../../../__utils__';
+import { generateTestData } from '../../../../../__utils__';
 
 describe('apiUserRepository', () => {
   beforeEach(() => {
