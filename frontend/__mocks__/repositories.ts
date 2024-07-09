@@ -1,8 +1,12 @@
-import { UserRepository } from '@/modules';
+import { EventRepository, UserRepository } from '@/modules';
 
 const createMockUserRepository = (): jest.Mocked<UserRepository> => ({
   signIn: jest.fn(),
   signUp: jest.fn(),
 });
 
-export { createMockUserRepository };
+const createMockEventRepository = (): jest.Mocked<EventRepository> => ({
+  create: jest.fn(),
+});
+
+export { createMockEventRepository, createMockUserRepository };
