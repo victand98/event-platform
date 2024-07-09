@@ -14,8 +14,8 @@ app.use(cors());
 
 app.use(currentUserMiddleware.handle.bind(currentUserMiddleware));
 
-app.use('/users', userRouter);
-app.use('/events', eventRouter);
+app.use('/api/users', userRouter);
+app.use('/api/events', eventRouter);
 
 app.use(errorMiddleware.handle.bind(errorMiddleware));
 
