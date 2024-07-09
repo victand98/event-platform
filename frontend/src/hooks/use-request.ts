@@ -1,14 +1,27 @@
-import { CustomError } from '@/modules';
+import { APIError } from '@/modules';
 import React from 'react';
 
-interface useRequestArgs<
+interface UseRequestArgs<
   Response,
   Properties extends unknown[],
   Values extends Record<string, any>,
 > {
   request: (...args: Properties) => Promise<Response>;
   onSuccess?: (data: Response) => void;
-  onError?: (error: CustomError<Values>) => void;
+  onError?: (error: APIError<Values>) => void;
+}
+
+interface UseRequestReturn<
+  Response,
+  Properties extends unknown[],
+  Values extends Record<string, any>,
+> {
+  error: APIError<Values> | null;
+  response: Response | null;
+  loading: boolean;
+  doRequest: (
+    ...properties: Parameters<(...args: Properties) => Promise<Response>>
+  ) => Promise<void>;
 }
 
 const useRequest = <
@@ -16,15 +29,17 @@ const useRequest = <
   Properties extends any[],
   Values extends Record<string, any> = Properties[0],
 >(
-  args: useRequestArgs<Response, Properties, Values>
-) => {
+  args: UseRequestArgs<Response, Properties, Values>
+): UseRequestReturn<Response, Properties, Values> => {
   const { request, onSuccess, onError } = args;
 
-  const [error, setError] = React.useState<CustomError<Values> | null>(null);
+  const [error, setError] = React.useState<APIError<Values> | null>(null);
   const [response, setResponse] = React.useState<Response | null>(null);
   const [loading, setLoading] = React.useState<boolean>(false);
 
-  const doRequest = async (...properties: Parameters<typeof request>) => {
+  const doRequest = async (
+    ...properties: Parameters<typeof request>
+  ): Promise<void> => {
     setLoading(true);
     setError(null);
     setResponse(null);
@@ -34,17 +49,17 @@ const useRequest = <
       setResponse(response);
       onSuccess?.(response);
     } catch (error) {
-      let customError: CustomError<Values>;
-
-      if (error instanceof Error) {
-        customError = { errors: [{ message: error.message }] };
-      } else if ('errors' in (error as Object)) {
-        customError = error as CustomError<Values>;
-      } else {
-        customError = { errors: [{ message: 'An unexpected error occurred' }] };
+      if (error instanceof APIError) {
+        setError(error);
+        onError?.(error);
+        return;
       }
-      setError(customError);
-      onError?.(customError);
+
+      const newError = new APIError<Values>({
+        errors: [{ message: 'An unexpected error occurred' }],
+      });
+      setError(newError);
+      onError?.(newError);
     } finally {
       setLoading(false);
     }
@@ -54,3 +69,4 @@ const useRequest = <
 };
 
 export { useRequest };
+export type { UseRequestArgs, UseRequestReturn };

@@ -14,7 +14,7 @@ class SignUpUseCase {
     const user = await this.userRepository.getByEmail(email);
 
     if (user) {
-      const error = new BadRequestError({ message: 'User already exists' });
+      const error = new BadRequestError({ message: 'User already exists', field: 'email' });
       this.logger.error(error.message);
       throw error;
     }
