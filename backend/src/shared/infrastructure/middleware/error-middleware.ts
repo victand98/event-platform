@@ -19,6 +19,7 @@ class ErrorMiddleware {
       }
       res.status(error.statusCode).json({ errors: error.serializeErrors() });
     } else {
+      this.logger.error({ context: { error }, message: 'Something went wrong' });
       res.status(StatusCode.INTERNAL_SERVER_ERROR).json({ errors: [{ message: 'Something went wrong' }] });
     }
     next();
