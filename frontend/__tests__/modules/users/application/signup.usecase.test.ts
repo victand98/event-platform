@@ -1,6 +1,6 @@
 import { signUpUseCase, UserRepository, UserSignUpData } from '@/modules';
-import { generateTestData } from '../../../__utils__';
-import { createMockUserRepository } from '../domain/__mocks__';
+import { createMockUserRepository } from '../../../../__mocks__';
+import { generateTestData } from '../../../../__utils__';
 
 describe('signUpUseCase', () => {
   let userRepository: jest.Mocked<UserRepository>;
