@@ -30,6 +30,8 @@ jobs:
         with:
           context: ./frontend
           file: ./frontend/Dockerfile.prod
+          build-args: |
+            NEXT_PUBLIC_APP_API_URL=${{ secrets.NEXT_PUBLIC_APP_API_URL }}
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
