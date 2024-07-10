@@ -1,6 +1,6 @@
 import './globals.css';
 
-import { SessionWrapper, Toaster } from '@/components';
+import { Providers, Toaster } from '@/components';
 import { cn } from '@/lib';
 import type { Metadata } from 'next';
 import { Inter as FontSans } from 'next/font/google';
@@ -22,7 +22,7 @@ export default function RootLayout(
 
   return (
     <html lang='en' suppressHydrationWarning>
-      <SessionWrapper>
+      <Providers>
         <body
           className={cn(
             'min-h-screen bg-background font-sans antialiased',
@@ -32,7 +32,7 @@ export default function RootLayout(
           {children}
           <Toaster />
         </body>
-      </SessionWrapper>
+      </Providers>
     </html>
   );
 }
