@@ -2,7 +2,7 @@ interface Event {
   id: number;
   title: string;
   comunity: string;
-  image: string | null;
+  image?: string;
   description: string;
   date: Date;
   location: string;
