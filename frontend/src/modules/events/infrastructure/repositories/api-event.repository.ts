@@ -18,7 +18,22 @@ const apiEventRepository = (): EventRepository => {
     return jsonResponse;
   };
 
-  return { create };
+  const getAll = async (): Promise<Event[]> => {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_APP_API_URL}/events`,
+      {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+      }
+    );
+    const jsonResponse = await response.json();
+    if (!response.ok) {
+      throw new APIError(jsonResponse);
+    }
+    return jsonResponse;
+  };
+
+  return { create, getAll };
 };
 
 export { apiEventRepository };

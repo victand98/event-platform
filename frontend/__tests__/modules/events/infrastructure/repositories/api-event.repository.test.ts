@@ -73,4 +73,41 @@ describe('apiEventRepository', () => {
       expect(fetch).toHaveBeenCalledTimes(1);
     });
   });
+
+  describe('getAll', () => {
+    it('should return a list of events when fetching is successful', async () => {
+      const data = [generateTestData('event'), generateTestData('event')];
+      fetchMock.mockResponseOnce(JSON.stringify(data));
+
+      const getAll = apiEventRepository().getAll;
+      const result = await getAll();
+
+      expect(JSON.stringify(result)).toEqual(JSON.stringify(data));
+      expect(fetch).toHaveBeenCalledTimes(1);
+    });
+
+    it('should throw an API error when fetching fails', async () => {
+      const apiError = generateTestData('apiError');
+      const { errors, statusCode } = apiError;
+
+      fetchMock.mockResponseOnce(JSON.stringify({ errors }), {
+        status: statusCode,
+      });
+
+      const getAll = apiEventRepository().getAll;
+
+      await expect(getAll()).rejects.toThrow(APIError);
+      expect(fetch).toHaveBeenCalledTimes(1);
+    });
+
+    it('should throw an error when fetch fails', async () => {
+      const error = new Error('Failed to fetch');
+      fetchMock.mockRejectOnce(error);
+
+      const getAll = apiEventRepository().getAll;
+
+      await expect(getAll()).rejects.toThrow(error.message);
+      expect(fetch).toHaveBeenCalledTimes(1);
+    });
+  });
 });
