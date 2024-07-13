@@ -24,6 +24,7 @@ const apiEventRepository = (): EventRepository => {
       {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
+        next: { revalidate: 10 },
       }
     );
     const jsonResponse = await response.json();
