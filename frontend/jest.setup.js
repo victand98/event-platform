@@ -7,3 +7,7 @@ class ResizeObserver {
 }
 
 window.ResizeObserver = ResizeObserver;
+
+jest.mock('next-auth', () => ({
+  getServerSession: jest.fn(async () => true),
+}));
