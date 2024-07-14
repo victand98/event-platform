@@ -8,6 +8,7 @@ const createMockUserRepository = (): jest.Mocked<UserRepository> => ({
 const createMockEventRepository = (): jest.Mocked<EventRepository> => ({
   create: jest.fn(),
   getAll: jest.fn(),
+  getById: jest.fn(),
 });
 
 export { createMockEventRepository, createMockUserRepository };
