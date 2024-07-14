@@ -2,7 +2,7 @@ import { EventRepository, getEventsUseCase } from '@/modules';
 import { createMockEventRepository } from '../../../../__mocks__';
 import { generateTestData } from '../../../../__utils__';
 
-describe.only('getEventsUseCase', () => {
+describe('getEventsUseCase', () => {
   let eventRepository: jest.Mocked<EventRepository>;
 
   beforeEach(() => {

@@ -40,7 +40,23 @@ const apiEventRepository = (): EventRepository => {
     return jsonResponse;
   };
 
-  return { create, getAll };
+  const getById = async (id: number): Promise<Event> => {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_APP_API_URL}/events/${id}`,
+      {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+        next: { revalidate: 1000 },
+      }
+    );
+    const jsonResponse = await response.json();
+    if (!response.ok) {
+      throw new APIError({ ...jsonResponse, statusCode: response.status });
+    }
+    return jsonResponse;
+  };
+
+  return { create, getAll, getById };
 };
 
 export { apiEventRepository };

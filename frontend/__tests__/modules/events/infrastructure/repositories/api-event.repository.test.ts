@@ -110,4 +110,46 @@ describe('apiEventRepository', () => {
       expect(fetch).toHaveBeenCalledTimes(1);
     });
   });
+
+  describe('getById', () => {
+    it('should return an event when fetching is successful', async () => {
+      const data = generateTestData('event');
+      const id = data.id;
+      fetchMock.mockResponseOnce(JSON.stringify(data));
+
+      const getById = apiEventRepository().getById;
+      const result = await getById(id);
+
+      expect(JSON.stringify(result)).toEqual(JSON.stringify(data));
+      expect(fetch).toHaveBeenCalledTimes(1);
+    });
+
+    it('should throw an API error when fetching fails', async () => {
+      const data = generateTestData('event');
+      const id = data.id;
+      const apiError = generateTestData('apiError');
+      const { errors, statusCode } = apiError;
+
+      fetchMock.mockResponseOnce(JSON.stringify({ errors }), {
+        status: statusCode,
+      });
+
+      const getById = apiEventRepository().getById;
+
+      await expect(getById(id)).rejects.toThrow(APIError);
+      expect(fetch).toHaveBeenCalledTimes(1);
+    });
+
+    it('should throw an error when fetch fails', async () => {
+      const data = generateTestData('event');
+      const id = data.id;
+      const error = new Error('Failed to fetch');
+      fetchMock.mockRejectOnce(error);
+
+      const getById = apiEventRepository().getById;
+
+      await expect(getById(id)).rejects.toThrow(error.message);
+      expect(fetch).toHaveBeenCalledTimes(1);
+    });
+  });
 });
