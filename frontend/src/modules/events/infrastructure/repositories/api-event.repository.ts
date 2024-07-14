@@ -1,4 +1,6 @@
 import { APIError } from '@/modules';
+import { getServerSession } from 'next-auth';
+import { redirect } from 'next/navigation';
 import { Event, EventCreateData, EventRepository } from '../../domain';
 
 const apiEventRepository = (): EventRepository => {
@@ -19,6 +21,10 @@ const apiEventRepository = (): EventRepository => {
   };
 
   const getAll = async (): Promise<Event[]> => {
+    const session = await getServerSession();
+    if (!session) {
+      redirect('/signin');
+    }
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_APP_API_URL}/events`,
       {

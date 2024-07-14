@@ -6,6 +6,8 @@ import {
   CardTitle,
   EventsDataTable,
 } from '@/components';
+import { Suspense } from 'react';
+import Loading from '../loading';
 
 export default function Events() {
   return (
@@ -18,7 +20,9 @@ export default function Events() {
       </CardHeader>
 
       <CardContent>
-        <EventsDataTable />
+        <Suspense fallback={<Loading />}>
+          <EventsDataTable />
+        </Suspense>
       </CardContent>
     </Card>
   );
