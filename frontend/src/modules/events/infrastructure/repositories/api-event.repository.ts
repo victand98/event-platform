@@ -35,7 +35,7 @@ const apiEventRepository = (): EventRepository => {
       {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
-        next: { revalidate: 10 },
+        next: { revalidate: 0 },
       }
     );
     const jsonResponse = await response.json();
@@ -51,7 +51,7 @@ const apiEventRepository = (): EventRepository => {
       {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
-        next: { revalidate: 1000 },
+        next: { revalidate: 0 },
       }
     );
     const jsonResponse = await response.json();
