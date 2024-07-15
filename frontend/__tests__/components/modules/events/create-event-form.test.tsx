@@ -99,10 +99,10 @@ describe('CreateEventForm', () => {
 
   describe('Form submission', () => {
     it('should submit the form with valid data', async () => {
-      const { debug } = render(<CreateEventForm />);
+      render(<CreateEventForm />);
 
       const eventData = generateTestData('event', {
-        date: faker.date.future(),
+        date: faker.date.future().toISOString(),
       });
 
       await userEvent.type(screen.getByLabelText(/Title/i), eventData.title);
@@ -125,7 +125,7 @@ describe('CreateEventForm', () => {
       await userEvent.click(screen.getByLabelText(/Publish Event/i));
       act(() => {
         fireEvent.change(screen.getByTestId('date-time-picker'), {
-          target: { value: eventData.date.toISOString() },
+          target: { value: eventData.date },
         });
       });
 
@@ -139,7 +139,7 @@ describe('CreateEventForm', () => {
           comunity: eventData.comunity,
           image: eventData.image,
           location: eventData.location,
-          date: eventData.date,
+          date: new Date(eventData.date),
           published: true,
         });
       });
@@ -173,7 +173,7 @@ describe('CreateEventForm', () => {
       render(<CreateEventForm />);
 
       const eventData = generateTestData('event', {
-        date: faker.date.future(),
+        date: faker.date.future().toISOString(),
       });
 
       await userEvent.type(screen.getByLabelText(/Title/i), eventData.title);
@@ -196,7 +196,7 @@ describe('CreateEventForm', () => {
       await userEvent.click(screen.getByLabelText(/Publish Event/i));
       act(() => {
         fireEvent.change(screen.getByTestId('date-time-picker'), {
-          target: { value: eventData.date.toISOString() },
+          target: { value: eventData.date },
         });
       });
 
@@ -228,7 +228,7 @@ describe('CreateEventForm', () => {
       render(<CreateEventForm />);
 
       const eventData = generateTestData('event', {
-        date: faker.date.future(),
+        date: faker.date.future().toISOString(),
       });
 
       await userEvent.type(screen.getByLabelText(/Title/i), eventData.title);
@@ -251,7 +251,7 @@ describe('CreateEventForm', () => {
       await userEvent.click(screen.getByLabelText(/Publish Event/i));
       act(() => {
         fireEvent.change(screen.getByTestId('date-time-picker'), {
-          target: { value: eventData.date.toISOString() },
+          target: { value: eventData.date },
         });
       });
 

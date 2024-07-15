@@ -4,11 +4,11 @@ interface Event {
   comunity: string;
   image?: string;
   description: string;
-  date: Date;
+  date: string;
   location: string;
   published: boolean;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export type { Event };
