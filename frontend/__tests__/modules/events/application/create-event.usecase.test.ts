@@ -18,7 +18,7 @@ describe('createEventUseCase', () => {
     const eventData: EventCreateData = {
       title: data.title,
       description: data.description,
-      date: data.date,
+      date: new Date(data.date),
       comunity: data.comunity,
       image: data.image,
       location: data.location,
@@ -39,7 +39,7 @@ describe('createEventUseCase', () => {
     const eventData: EventCreateData = {
       title: data.title,
       description: data.description,
-      date: data.date,
+      date: new Date(data.date),
       comunity: data.comunity,
       image: data.image,
       location: data.location,
