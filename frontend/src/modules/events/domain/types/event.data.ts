@@ -5,4 +5,9 @@ type EventCreateData = Pick<
   'comunity' | 'description' | 'image' | 'location' | 'published' | 'title'
 > & { date: Date | null };
 
-export type { EventCreateData };
+type EventUpdateData = Pick<
+  Event,
+  'comunity' | 'description' | 'image' | 'location' | 'published' | 'title'
+> & { date: Date | null };
+
+export type { EventCreateData, EventUpdateData };

@@ -1,7 +1,12 @@
 import { APIError } from '@/modules';
 import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
-import { Event, EventCreateData, EventRepository } from '../../domain';
+import {
+  Event,
+  EventCreateData,
+  EventRepository,
+  EventUpdateData,
+} from '../../domain';
 
 const apiEventRepository = (): EventRepository => {
   const create = async (data: EventCreateData): Promise<Event> => {
@@ -56,7 +61,23 @@ const apiEventRepository = (): EventRepository => {
     return jsonResponse;
   };
 
-  return { create, getAll, getById };
+  const update = async (id: number, data: EventUpdateData): Promise<Event> => {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_APP_API_URL}/events/${id}`,
+      {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      }
+    );
+    const jsonResponse = await response.json();
+    if (!response.ok) {
+      throw new APIError({ ...jsonResponse, statusCode: response.status });
+    }
+    return jsonResponse;
+  };
+
+  return { create, getAll, getById, update };
 };
 
 export { apiEventRepository };
