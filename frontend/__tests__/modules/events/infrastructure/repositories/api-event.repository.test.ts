@@ -1,4 +1,9 @@
-import { APIError, apiEventRepository, EventCreateData } from '@/modules';
+import {
+  APIError,
+  apiEventRepository,
+  EventCreateData,
+  EventUpdateData,
+} from '@/modules';
 import fetchMock from 'jest-fetch-mock';
 import { generateTestData } from '../../../../../__utils__';
 
@@ -12,7 +17,7 @@ describe('apiEventRepository', () => {
       const data = generateTestData('event');
       const createData: EventCreateData = {
         comunity: data.comunity,
-        date: data.date,
+        date: new Date(data.date),
         description: data.description,
         image: data.image,
         location: data.location,
@@ -33,7 +38,7 @@ describe('apiEventRepository', () => {
       const data = generateTestData('event');
       const createData: EventCreateData = {
         comunity: data.comunity,
-        date: data.date,
+        date: new Date(data.date),
         description: data.description,
         image: data.image,
         location: data.location,
@@ -57,7 +62,7 @@ describe('apiEventRepository', () => {
       const data = generateTestData('event');
       const createData: EventCreateData = {
         comunity: data.comunity,
-        date: data.date,
+        date: new Date(data.date),
         description: data.description,
         image: data.image,
         location: data.location,
@@ -149,6 +154,75 @@ describe('apiEventRepository', () => {
       const getById = apiEventRepository().getById;
 
       await expect(getById(id)).rejects.toThrow(error.message);
+      expect(fetch).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('update', () => {
+    it('should return an event when update is successful', async () => {
+      const data = generateTestData('event');
+      const id = data.id;
+      const updateData: EventUpdateData = {
+        comunity: data.comunity,
+        date: new Date(data.date),
+        description: data.description,
+        image: data.image,
+        location: data.location,
+        published: data.published,
+        title: data.title,
+      };
+      fetchMock.mockResponseOnce(JSON.stringify(data));
+
+      const update = apiEventRepository().update;
+      const result = await update(id, updateData);
+
+      expect(JSON.stringify(result)).toEqual(JSON.stringify(data));
+      expect(fetch).toHaveBeenCalledTimes(1);
+    });
+
+    it('should throw an API error when update fails', async () => {
+      const data = generateTestData('event');
+      const id = data.id;
+      const updateData: EventUpdateData = {
+        comunity: data.comunity,
+        date: new Date(data.date),
+        description: data.description,
+        image: data.image,
+        location: data.location,
+        published: data.published,
+        title: data.title,
+      };
+      const apiError = generateTestData('apiError');
+      const { errors, statusCode } = apiError;
+
+      fetchMock.mockResponseOnce(JSON.stringify({ errors }), {
+        status: statusCode,
+      });
+
+      const update = apiEventRepository().update;
+
+      await expect(update(id, updateData)).rejects.toThrow(APIError);
+      expect(fetch).toHaveBeenCalledTimes(1);
+    });
+
+    it('should throw an error when fetch fails', async () => {
+      const data = generateTestData('event');
+      const id = data.id;
+      const updateData: EventUpdateData = {
+        comunity: data.comunity,
+        date: new Date(data.date),
+        description: data.description,
+        image: data.image,
+        location: data.location,
+        published: data.published,
+        title: data.title,
+      };
+      const error = new Error('Failed to fetch');
+      fetchMock.mockRejectOnce(error);
+
+      const update = apiEventRepository().update;
+
+      await expect(update(id, updateData)).rejects.toThrow(error.message);
       expect(fetch).toHaveBeenCalledTimes(1);
     });
   });
