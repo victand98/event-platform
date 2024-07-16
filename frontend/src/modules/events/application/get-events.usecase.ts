@@ -1,8 +1,12 @@
 import { Event, EventRepository } from '../domain';
 
 const getEventsUseCase = (eventRepository: EventRepository) => {
-  return async (): Promise<Event[]> => {
-    return await eventRepository.getAll();
+  return async (onlyPublished: boolean = false): Promise<Event[]> => {
+    const events = await eventRepository.getAll();
+    if (onlyPublished) {
+      return events.filter((event) => event.published);
+    }
+    return events;
   };
 };
 

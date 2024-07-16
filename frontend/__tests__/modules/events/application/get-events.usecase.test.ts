@@ -29,4 +29,18 @@ describe('getEventsUseCase', () => {
     await expect(getEvents()).rejects.toThrow(error.message);
     expect(eventRepository.getAll).toHaveBeenCalledTimes(1);
   });
+
+  it('should return only published events when onlyPublished is true', async () => {
+    const data = [
+      generateTestData('event', { published: true }),
+      generateTestData('event', { published: false }),
+    ];
+    eventRepository.getAll.mockResolvedValue(data);
+
+    const getEvents = getEventsUseCase(eventRepository);
+    const response = await getEvents(true);
+
+    expect(response).toEqual([data[0]]);
+    expect(eventRepository.getAll).toHaveBeenCalledTimes(1);
+  });
 });
