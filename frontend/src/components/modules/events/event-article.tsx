@@ -30,11 +30,7 @@ const EventArticle: React.FC<EventArticleProps> = (props) => {
         {event.title}
       </TypographyH2>
 
-      <p className='text-muted-foreground line-clamp-3'>
-        {event.description} Lorem ipsum dolor sit amet, consectetur adipisicing
-        elit. Unde sint voluptatibus aut autem tenetur consequatur hic iure
-        laborum soluta quibusdam!
-      </p>
+      <p className='text-muted-foreground line-clamp-3'>{event.description}</p>
 
       <p className='text-sm text-muted-foreground'>
         {formatDate(event.date, 'PPp')}
