@@ -7,7 +7,7 @@ import {
   EventsDataTable,
 } from '@/components';
 import { Suspense } from 'react';
-import Loading from '../loading';
+import Loading from '../../loading';
 
 export default function Events() {
   return (
