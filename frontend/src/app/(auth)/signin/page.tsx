@@ -10,11 +10,17 @@ import { getServerSession } from 'next-auth';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
-export default async function SignInPage() {
+interface SignInPageProps {
+  searchParams?: { [key: string]: string | string[] | undefined };
+}
+
+export default async function SignInPage(props: SignInPageProps) {
+  const { searchParams } = props;
+
   const session = await getServerSession();
 
   if (session) {
-    redirect('/');
+    redirect(searchParams?.callbackUrl?.toString() || '/');
   }
 
   return (
