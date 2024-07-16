@@ -19,6 +19,35 @@ const TypographyH1: React.FC<TypographyH1Props> = (props) => {
   );
 };
 
+export interface TypographyH2Props
+  extends React.HTMLAttributes<HTMLHeadingElement> {}
+
+const TypographyH2: React.FC<TypographyH2Props> = (props) => {
+  const { children, className } = props;
+
+  return (
+    <h2
+      className={cn(
+        'scroll-m-20 text-3xl font-semibold tracking-tight first:mt-0',
+        className
+      )}
+    >
+      {children}
+    </h2>
+  );
+};
+
+export interface TypographyLeadProps
+  extends React.HTMLAttributes<HTMLParagraphElement> {}
+
+const TypographyLead: React.FC<TypographyLeadProps> = (props) => {
+  const { children, className } = props;
+
+  return (
+    <p className={cn('text-xl text-muted-foreground', className)}>{children}</p>
+  );
+};
+
 export interface TypographyPProps
   extends React.HTMLAttributes<HTMLParagraphElement> {}
 
@@ -45,4 +74,10 @@ const TypographyBlockquote: React.FC<TypographyBlockquoteProps> = (props) => {
   );
 };
 
-export { TypographyBlockquote, TypographyH1, TypographyP };
+export {
+  TypographyBlockquote,
+  TypographyH1,
+  TypographyH2,
+  TypographyLead,
+  TypographyP,
+};
