@@ -1,6 +1,7 @@
 const siteConfig = {
   name: 'Event Platform',
-  description: 'A platform to manage events',
+  description:
+    'A web platform designed for members of tech communities to create and find tech events',
   author: 'Víctor Andrés Rojas',
   links: {
     author: 'https://victorandresrojas.com',
