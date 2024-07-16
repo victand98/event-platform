@@ -15,7 +15,7 @@ import { UserSignInData } from '@/modules';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Loader2 } from 'lucide-react';
 import { signIn } from 'next-auth/react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
@@ -32,9 +32,6 @@ export interface SignInFormProps {}
 const SignInForm: React.FC<SignInFormProps> = () => {
   const router = useRouter();
 
-  const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get('callbackUrl');
-
   const form = useForm<UserSignInData>({
     resolver: zodResolver(formSchema),
     defaultValues: { email: '', password: '' },
@@ -42,11 +39,7 @@ const SignInForm: React.FC<SignInFormProps> = () => {
 
   const { doRequest, loading } = useRequest({
     request: async (values) =>
-      await signIn('credentials', {
-        ...values,
-        redirect: false,
-        callbackUrl: callbackUrl || '/',
-      }),
+      await signIn('credentials', { ...values, redirect: false }),
     onSuccess: (res) => {
       if (!res) return;
       const { error, url } = res;
@@ -55,7 +48,7 @@ const SignInForm: React.FC<SignInFormProps> = () => {
         toast.error(error);
       }
       if (url) {
-        router.push(url);
+        router.refresh();
       }
     },
   });
