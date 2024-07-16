@@ -1,4 +1,4 @@
-import { SidebarNavItem } from '@/types';
+import { MainNavItem, SidebarNavItem } from '@/types';
 
 const sidebarNavItems: SidebarNavItem[] = [
   {
@@ -22,4 +22,15 @@ const sidebarNavItems: SidebarNavItem[] = [
   },
 ];
 
-export { sidebarNavItems };
+const mainNavItems: MainNavItem[] = [
+  {
+    title: 'Events',
+    href: '/dashboard/events',
+  },
+  {
+    title: 'Create Event',
+    href: '/dashboard/events/new',
+  },
+];
+
+export { mainNavItems, sidebarNavItems };
