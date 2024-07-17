@@ -25,9 +25,11 @@ export const eventColumns: ColumnDef<Event>[] = [
     cell: ({ row }) => {
       const comunity = row.original.comunity;
       return (
-        <div className='flex space-x-2'>
-          <Badge variant='secondary'>{comunity}</Badge>
-          <span className='max-w-[500px] truncate font-medium'>
+        <div className='flex flex-col items-start space-y-2'>
+          <Badge variant='secondary' className='max-w-[150px] line-clamp-1'>
+            {comunity}
+          </Badge>
+          <span className='line-clamp-3 font-medium pl-2.5'>
             {row.getValue('title')}
           </span>
         </div>

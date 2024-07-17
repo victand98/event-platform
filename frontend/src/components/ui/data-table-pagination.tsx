@@ -24,7 +24,7 @@ const DataTablePagination: <TData>(
   const { table } = props;
 
   return (
-    <div className='flex items-center justify-between px-2'>
+    <div className='flex flex-col space-y-4 items-center justify-between px-2 md:flex-row md:space-y-0'>
       {table.getIsSomeRowsSelected() ? (
         <div className='flex-1 text-sm text-muted-foreground'>
           {table.getFilteredSelectedRowModel().rows.length} of{' '}
@@ -36,7 +36,7 @@ const DataTablePagination: <TData>(
         </div>
       )}
 
-      <div className='flex items-center space-x-6 lg:space-x-8'>
+      <div className='flex flex-col space-y-2 items-center sm:flex-row sm:space-x-6 sm:space-y-0 lg:space-x-8'>
         <div className='flex items-center space-x-2'>
           <p className='text-sm font-medium'>Rows per page</p>
           <Select
