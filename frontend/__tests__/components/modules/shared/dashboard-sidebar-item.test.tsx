@@ -1,14 +1,18 @@
-import {
-  DashboardSidebarItem,
-  DashboardSidebarSubItemProps,
-} from '@/components';
+import { DashboardSidebarItem } from '@/components';
 import { SidebarNavItem } from '@/types';
+import React from 'react';
 import { render, screen } from '../../../../__utils__';
 
 jest.mock('@/components', () => ({
   ...jest.requireActual('@/components'),
-  DashboardSidebarSubItem: ({ item }: DashboardSidebarSubItemProps) => (
-    <div data-testid='sidebar-sub-item'>{item.title}</div>
+  Tooltip: ({ children }: React.PropsWithChildren) => (
+    <div data-testid='tooltip'>{children}</div>
+  ),
+  TooltipTrigger: ({ children }: React.PropsWithChildren) => (
+    <div data-testid='tooltip-trigger'>{children}</div>
+  ),
+  TooltipContent: ({ children }: React.PropsWithChildren) => (
+    <div data-testid='tooltip-content'>{children}</div>
   ),
 }));
 jest.mock('@/lib', () => ({
@@ -18,40 +22,38 @@ jest.mock('lucide-react', () => ({
   AArrowDown: () => <div data-testid='lucide-icon' />,
 }));
 
-describe('DashboardSidebarItem', () => {
+describe('DashboardSidebarSubitem', () => {
   const mockItem: SidebarNavItem = {
-    title: 'Home',
-    href: '/home',
+    title: 'Test',
+    href: '/test',
     icon: 'AArrowDown',
-    items: [
-      { title: 'SubItem1', href: '/sub1', items: [] },
-      { title: 'SubItem2', href: '/sub2', items: [] },
-    ],
+    items: [],
   };
 
-  it('should render correctly with icon and sub-items', () => {
+  it('should render correctly with icon', () => {
     render(<DashboardSidebarItem item={mockItem} pathname='/other' />);
 
-    expect(screen.getByTestId('link')).toHaveAttribute('href', '/home');
-    expect(screen.getByTestId('link')).toHaveClass('text-primary-foreground');
+    expect(screen.getByTestId('tooltip')).toBeInTheDocument();
+    expect(screen.getByTestId('tooltip-trigger')).toBeInTheDocument();
+    expect(screen.getByTestId('tooltip-content')).toBeInTheDocument();
+    expect(screen.getByTestId('link')).toHaveAttribute('href', '/test');
+    expect(screen.getByTestId('link')).toHaveClass(
+      'text-muted-foreground hover:text-foreground'
+    );
     expect(screen.getByTestId('lucide-icon')).toBeInTheDocument();
     expect(
-      screen.getByText('Home', { selector: 'span.sr-only' })
+      screen.getByText('Test', { selector: 'span.sr-only' })
     ).toBeInTheDocument();
-    expect(screen.getAllByTestId('sidebar-sub-item')).toHaveLength(2);
-    expect(screen.getByText('SubItem1')).toBeInTheDocument();
-    expect(screen.getByText('SubItem2')).toBeInTheDocument();
+    expect(screen.getByTestId('tooltip-content')).toHaveTextContent('Test');
   });
 
   it('should apply active styles when pathname matches href', () => {
-    render(<DashboardSidebarItem item={mockItem} pathname='/home' />);
+    render(<DashboardSidebarItem item={mockItem} pathname='/test' />);
 
-    expect(screen.getByTestId('link')).toHaveClass(
-      'bg-primary-foreground text-primary'
-    );
+    expect(screen.getByTestId('link')).toHaveClass('text-foreground');
   });
 
-  it('should renders without icon when not provided', () => {
+  it('should render without icon when not provided', () => {
     const itemWithoutIcon = { ...mockItem, icon: undefined };
     render(<DashboardSidebarItem item={itemWithoutIcon} pathname='/other' />);
 
@@ -63,17 +65,5 @@ describe('DashboardSidebarItem', () => {
     render(<DashboardSidebarItem item={itemWithoutHref} pathname='/other' />);
 
     expect(screen.getByTestId('link')).toHaveAttribute('href', '#');
-  });
-
-  it('should apply additional className when provided', () => {
-    render(
-      <DashboardSidebarItem
-        item={mockItem}
-        pathname='/other'
-        className='test-class'
-      />
-    );
-
-    expect(screen.getByRole('navigation')).toHaveClass('test-class');
   });
 });
