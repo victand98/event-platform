@@ -17,8 +17,8 @@ export default async function HomeLayout(
       <header className='container z-40 bg-background'>
         <div className='flex h-20 items-center justify-between py-6'>
           <MainNav items={mainNavItems} />
-          {!session ? (
-            <nav>
+          <nav>
+            {!session ? (
               <Link
                 href='/signin'
                 className={cn(
@@ -28,8 +28,18 @@ export default async function HomeLayout(
               >
                 Sign In
               </Link>
-            </nav>
-          ) : null}
+            ) : (
+              <Link
+                href='/signout'
+                className={cn(
+                  buttonVariants({ variant: 'secondary', size: 'sm' }),
+                  'px-4'
+                )}
+              >
+                Sign Out
+              </Link>
+            )}
+          </nav>
         </div>
       </header>
 
