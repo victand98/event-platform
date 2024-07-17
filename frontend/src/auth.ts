@@ -23,5 +23,5 @@ export const handler = NextAuth({
     }),
   ],
 
-  pages: { signIn: '/signin', error: '/signin' },
+  pages: { signIn: '/signin', error: '/signin', signOut: '/signout' },
 });
