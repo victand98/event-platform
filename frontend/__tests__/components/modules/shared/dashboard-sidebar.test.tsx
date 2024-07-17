@@ -1,4 +1,5 @@
-import { DashboardSidebar, DashboardSidebarItemProps } from '@/components';
+import { DashboardSidebar } from '@/components';
+import { siteConfig } from '@/config';
 import { SidebarNavItem } from '@/types';
 import { render, screen } from '../../../../__utils__';
 
@@ -8,52 +9,51 @@ jest.mock('next/navigation', () => ({
 
 jest.mock('@/components', () => ({
   ...jest.requireActual('@/components'),
-  DashboardSidebarItem: ({ item, className }: DashboardSidebarItemProps) => (
-    <div data-testid='sidebar-item' className={className}>
-      {item.icon}
-      {item.title}
-    </div>
+  DashboardSidebarItem: ({ item }: { item: SidebarNavItem }) => (
+    <div data-testid={`sidebar-item-${item.title}`}>{item.title}</div>
   ),
+}));
+
+jest.mock('lucide-react', () => ({
+  CalendarCheckIcon: () => <div data-testid='calendar-check-icon' />,
 }));
 
 describe('DashboardSidebar', () => {
   const mockItems: SidebarNavItem[] = [
-    { title: 'Home', href: '/home', icon: 'AArrowDown', items: [] },
-    { title: 'Profile', href: '/profile', icon: 'User', items: [] },
-    { title: 'Settings', href: '/settings', icon: 'Settings', items: [] },
+    { title: 'Home', icon: 'House', href: '/', items: [] },
+    { title: 'Profile', icon: 'User', href: '/profile', items: [] },
   ];
 
   it('should render correctly with multiple items', () => {
     render(<DashboardSidebar items={mockItems} />);
 
-    const sidebarItems = screen.getAllByTestId('sidebar-item');
-    expect(sidebarItems).toHaveLength(3);
-    expect(sidebarItems[0]).toHaveTextContent('AArrowDown');
-    expect(sidebarItems[1]).toHaveTextContent('Profile');
-    expect(sidebarItems[2]).toHaveTextContent('Settings');
+    expect(screen.getByTestId('calendar-check-icon')).toBeInTheDocument();
+    expect(screen.getByText(siteConfig.name)).toBeInTheDocument();
+    expect(screen.getByTestId('sidebar-item-Home')).toBeInTheDocument();
+    expect(screen.getByTestId('sidebar-item-Profile')).toBeInTheDocument();
+    expect(screen.getByTestId('sidebar-item-Sign Out')).toBeInTheDocument();
   });
 
-  it('should apply correct className to items', () => {
+  it('should apply correct className', () => {
+    const customClass = 'custom-class';
+
+    render(<DashboardSidebar items={mockItems} className={customClass} />);
+
+    const sidebar = screen.getByRole('complementary');
+    expect(sidebar).toHaveClass(customClass);
+  });
+
+  it('should render the correct number of items', () => {
     render(<DashboardSidebar items={mockItems} />);
 
-    const sidebarItems = screen.getAllByTestId('sidebar-item');
-    expect(sidebarItems[0]).not.toHaveClass('mt-auto');
-    expect(sidebarItems[1]).toHaveClass('mt-auto');
-    expect(sidebarItems[2]).toHaveClass('mt-auto');
+    const sidebarItems = screen.getAllByTestId(/^sidebar-item-/);
+    expect(sidebarItems).toHaveLength(mockItems.length + 1);
   });
 
-  it('should render correctly with no items', () => {
-    render(<DashboardSidebar items={[]} />);
-
-    expect(screen.queryByTestId('sidebar-item')).not.toBeInTheDocument();
-  });
-
-  it('should render with correct aside attributes', () => {
+  it('should render the site logo link correctly', () => {
     render(<DashboardSidebar items={mockItems} />);
 
-    const aside = screen.getByRole('complementary');
-    expect(aside).toBeInTheDocument();
-    expect(aside.tagName).toBe('ASIDE');
-    expect(aside).toHaveClass('hidden sm:flex');
+    const logoLink = screen.getByRole('link', { name: siteConfig.name });
+    expect(logoLink).toHaveAttribute('href', '/');
   });
 });
