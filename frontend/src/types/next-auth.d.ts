@@ -17,7 +17,9 @@ declare module 'next-auth' {
   /**
    * Returned by `useSession`, `auth`, contains information about the active session.
    */
-  interface Session {}
+  interface Session {
+    accessToken: string;
+  }
 }
 
 // The `JWT` interface can be found in the `next-auth/jwt` submodule
@@ -25,5 +27,7 @@ import 'next-auth/jwt';
 
 declare module 'next-auth/jwt' {
   /** Returned by the `jwt` callback and `auth`, when using JWT sessions */
-  interface JWT {}
+  interface JWT {
+    accessToken: string;
+  }
 }

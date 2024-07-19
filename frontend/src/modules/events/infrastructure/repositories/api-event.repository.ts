@@ -1,5 +1,6 @@
 import { APIError } from '@/modules';
 import { getServerSession } from 'next-auth';
+import { getSession } from 'next-auth/react';
 import {
   Event,
   EventCreateData,
@@ -9,11 +10,15 @@ import {
 
 const apiEventRepository = (): EventRepository => {
   const create = async (data: EventCreateData): Promise<Event> => {
+    const session = await getSession();
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_APP_API_URL}/events`,
       {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${session?.accessToken}`,
+        },
         body: JSON.stringify(data),
       }
     );
@@ -58,11 +63,15 @@ const apiEventRepository = (): EventRepository => {
   };
 
   const update = async (id: number, data: EventUpdateData): Promise<Event> => {
+    const session = await getSession();
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_APP_API_URL}/events/${id}`,
       {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${session?.accessToken}`,
+        },
         body: JSON.stringify(data),
       }
     );
