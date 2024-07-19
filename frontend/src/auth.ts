@@ -10,9 +10,6 @@ export const handler = NextAuth({
         const response = await signInUseCase(userRepository)(
           credentials as UserSignInData
         );
-        if ('errors' in response) {
-          throw new Error(response.errors[0].message);
-        }
 
         return {
           ...response,

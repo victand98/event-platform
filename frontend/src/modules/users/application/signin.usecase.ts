@@ -1,10 +1,7 @@
-import { CustomError } from '@/modules/shared';
 import { UserRepository, UserSignInData, UserSignInResponse } from '../domain';
 
 const signInUseCase = (userRepository: UserRepository) => {
-  return async (
-    data: UserSignInData
-  ): Promise<UserSignInResponse | CustomError> => {
+  return async (data: UserSignInData): Promise<UserSignInResponse> => {
     return await userRepository.signIn(data);
   };
 };

@@ -62,6 +62,25 @@ describe('apiUserRepository', () => {
       await expect(signIn(signInData)).rejects.toThrow(error.message);
       expect(fetch).toHaveBeenCalledTimes(1);
     });
+
+    it('should throw an error with Unknown error message when response has no errors array', async () => {
+      const data = generateTestData('user');
+      const signInData: UserSignInData = {
+        email: data.email,
+        password: data.password,
+      };
+      const apiError = generateTestData('apiError');
+      const { statusCode } = apiError;
+
+      fetchMock.mockResponseOnce(JSON.stringify({}), {
+        status: statusCode,
+      });
+
+      const signIn = apiUserRepository().signIn;
+
+      await expect(signIn(signInData)).rejects.toThrow('Unknown error');
+      expect(fetch).toHaveBeenCalledTimes(1);
+    });
   });
 
   describe('signUp', () => {

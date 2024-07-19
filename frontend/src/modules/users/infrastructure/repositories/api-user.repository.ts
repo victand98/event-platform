@@ -21,7 +21,11 @@ const apiUserRepository = (): UserRepository => {
     );
     const jsonResponse = await response.json();
     if (!response.ok) {
-      throw new APIError(jsonResponse);
+      throw new APIError({
+        message: jsonResponse?.errors?.[0]?.message || 'Unknown error',
+        errors: jsonResponse?.errors || [],
+        statusCode: response.status,
+      });
     }
     return jsonResponse;
   };
