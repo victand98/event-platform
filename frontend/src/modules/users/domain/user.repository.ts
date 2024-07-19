@@ -1,4 +1,3 @@
-import { CustomError } from '@/modules';
 import {
   UserSignInData,
   UserSignInResponse,
@@ -7,7 +6,7 @@ import {
 } from './types';
 
 interface UserRepository {
-  signIn(data: UserSignInData): Promise<UserSignInResponse | CustomError>;
+  signIn(data: UserSignInData): Promise<UserSignInResponse>;
   signUp(data: UserSignUpData): Promise<UserSignUpResponse>;
 }
 
