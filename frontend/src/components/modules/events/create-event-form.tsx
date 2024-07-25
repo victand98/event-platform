@@ -15,6 +15,7 @@ import {
   Switch,
   Textarea,
 } from '@/components';
+import { revalidateEventsAction } from '@/components/modules/events';
 import { DateTimePicker } from '@/components/ui/date-time';
 import { useRequest } from '@/hooks';
 import { setFormError, toastError } from '@/lib';
@@ -63,6 +64,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = () => {
   const { doRequest, loading } = useRequest({
     request: createEventUseCase(eventRepository),
     onSuccess: () => {
+      revalidateEventsAction();
       toast.success('Event created successfully');
       router.push('/dashboard/events');
     },

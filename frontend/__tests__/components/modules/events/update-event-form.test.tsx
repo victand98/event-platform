@@ -14,6 +14,10 @@ import {
   waitFor,
 } from '../../../../__utils__';
 
+jest.mock('@/components/modules/events', () => ({
+  ...jest.requireActual('@/components/modules/events'),
+  revalidateEventsAction: jest.fn(),
+}));
 jest.mock('@/components/ui/date-time', () => ({
   ...jest.requireActual('@/components/ui/date-time'),
   DateTimePicker: ({ onJsDateChange, jsDate, defaultValue }: any) => (
