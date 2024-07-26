@@ -5,6 +5,11 @@ import {
   CardTitle,
   CreateEventForm,
 } from '@/components';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'New Event',
+};
 
 export default function NewEvent() {
   return (

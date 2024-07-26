@@ -7,9 +7,14 @@ import {
   CardTitle,
   SignOutButton,
 } from '@/components';
+import { Metadata } from 'next';
 import { getServerSession } from 'next-auth';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
+
+export const metadata: Metadata = {
+  title: 'Sign Out',
+};
 
 export default async function SignOutPage() {
   const session = await getServerSession();

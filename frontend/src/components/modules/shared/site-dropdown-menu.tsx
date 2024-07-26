@@ -43,9 +43,10 @@ const SiteDropdownMenu: React.FC<SiteDropdownMenuProps> = (props) => {
       <DropdownMenuContent align='end'>
         <DropdownMenuLabel>{data?.user?.name}</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
-          <LogOutIcon className='mr-2 h-4 w-4' />
-          <Link href='/signout'>Sign Out</Link>
+        <DropdownMenuItem asChild>
+          <Link href='/signout'>
+            <LogOutIcon className='mr-2 h-4 w-4' /> Sign Out
+          </Link>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

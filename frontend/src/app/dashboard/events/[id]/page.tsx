@@ -6,6 +6,11 @@ import {
   UpdateEventForm,
 } from '@/components';
 import { eventRepository, getEventUseCase } from '@/modules';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Update Event',
+};
 
 interface UpdateEventProps {
   params: { id: string };

@@ -29,7 +29,7 @@ export default function EventLayout(
       <div className='flex justify-center py-6 lg:py-10'>
         <Link href='/' className={cn(buttonVariants({ variant: 'ghost' }))}>
           <ChevronLeftIcon className='mr-2 h-4 w-4' />
-          See all posts
+          See all events
         </Link>
       </div>
     </article>
