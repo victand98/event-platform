@@ -6,9 +6,14 @@ import {
   CardTitle,
   SignUpForm,
 } from '@/components';
+import { Metadata } from 'next';
 import { getServerSession } from 'next-auth';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
+
+export const metadata: Metadata = {
+  title: 'Sign Up',
+};
 
 export default async function SignUpPage() {
   const session = await getServerSession();

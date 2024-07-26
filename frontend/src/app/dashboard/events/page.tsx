@@ -6,8 +6,13 @@ import {
   CardTitle,
   EventsDataTable,
 } from '@/components';
+import { Metadata } from 'next';
 import { Suspense } from 'react';
 import Loading from '../../loading';
+
+export const metadata: Metadata = {
+  title: 'Events',
+};
 
 export default function Events() {
   return (

@@ -6,9 +6,14 @@ import {
   CardTitle,
   SignInForm,
 } from '@/components';
+import { Metadata } from 'next';
 import { getServerSession } from 'next-auth';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
+
+export const metadata: Metadata = {
+  title: 'Sign In',
+};
 
 interface SignInPageProps {
   searchParams?: { [key: string]: string | string[] | undefined };

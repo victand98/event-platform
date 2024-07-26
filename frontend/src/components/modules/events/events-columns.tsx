@@ -90,10 +90,10 @@ export const eventColumns: ColumnDef<Event>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align='end'>
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem>
+            <DropdownMenuItem asChild>
               <Link href={`/dashboard/events/${id}`}>Edit event</Link>
             </DropdownMenuItem>
-            <DropdownMenuItem>
+            <DropdownMenuItem asChild>
               <Link href={`/${id}`}>View event details</Link>
             </DropdownMenuItem>
           </DropdownMenuContent>
